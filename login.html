@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Library</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5fff3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 1200px;
+            margin: auto;
+        }
+        
+        .illustration {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .illustration img {
+            width: 80%;
+            max-width: 400px;
+        }
+        
+        .form-container {
+            flex: 1;
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2d7c4a;
+        }
+        
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-container input {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .form-container button {
+            background-color: #2d7c4a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .form-container button:hover {
+            background-color: #23663a;
+        }
+        
+        .form-container .signin-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        .form-container .signin-link a {
+            color: #2d7c4a;
+            text-decoration: none;
+        }
+        
+        section {
+            display: none;
+        }
+        
+        section.active {
+            display: block;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Sign In Section -->
+    <section id="Sign_in" class="active">
+        <div class="container">
+            <div class="illustration">
+                <img src="photos/login_logo.jpeg" alt="Illustration of books on a smartphone">
+            </div>
+            <div class="form-container">
+                <h2>Sign In</h2>
+                <form action="signin.php" method="POST">
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit">Sign in</button>
+                </form>                
+                <div class="signin-link">
+                    Don't have an account? <a href="#" onclick="showSection('Sign_up')">Sign up</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Create Account Section -->
+    <section id="Sign_up">
+        <div class="container">
+            <div class="illustration">
+                <img src="photos/login_logo.jpeg" alt="Illustration of books on a smartphone">
+            </div>
+            <div class="form-container">
+                <h2>Create Account</h2>
+                <form action="signup.php" method="POST">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="text" name="phone" placeholder="Phone Number" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit">Create Account</button>
+                </form>                
+                <div class="signin-link">
+                    Have an account? <a href="#" onclick="showSection('Sign_in')">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        // Function to show a specific section by ID
+function showSection(sectionId) {
+    // Hide all sections
+    document.querySelectorAll("section").forEach((section) => {
+        section.classList.remove("active");
+    });
+
+    // Show the selected section
+    document.getElementById(sectionId).classList.add("active");
+
+    // Clear form data when navigating to the sign-in or sign-up sections
+    if (sectionId === "Sign_in" || sectionId === "Sign_up") {
+        clearFormData();
+    }
+}
+
+// Function to handle the "Create Account" form submission
+function handleCreateAccount(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Validate Create Account form
+    if (validateForm("Sign_up")) {
+        alert("Account created successfully!");
+        showSection("Sign_in"); // Navigate to the Sign In section
+    }
+}
+
+// Function to handle the "Sign In" form submission
+function handleSignIn(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Validate Sign In form
+    if (validateForm("Sign_in")) {
+        alert("Signed in successfully!");
+        // Navigate to the home section or additional logic (if needed)
+    }
+}
+
+// Function to clear form data
+function clearFormData() {
+    // Clear all input fields in the "Sign_in" and "Sign_up" forms
+    const forms = document.querySelectorAll("form");
+    forms.forEach((form) => {
+        form.reset();
+    });
+}
+
+// Function to validate form fields
+function validateForm(sectionId) {
+    const section = document.getElementById(sectionId);
+
+    // Validate Name (only alphabetic characters)
+    const nameField = section.querySelector('input[name="name"]');
+    if (nameField && !/^[a-zA-Z]+$/.test(nameField.value)) {
+        alert("Name must contain only alphabetic characters.");
+        return false;
+    }
+
+    // Validate Email (must end with @gmail.com)
+    const emailField = section.querySelector('input[name="email"]');
+    if (emailField && !/^[\w.-]+@gmail\.com$/.test(emailField.value)) {
+        alert("Email must end with '@gmail.com'.");
+        return false;
+    }
+
+    // Validate Phone Number (numeric only)
+    const phoneField = section.querySelector('input[name="phone"]');
+    if (phoneField && !/^\d+$/.test(phoneField.value)) {
+        alert("Phone number must contain only numeric characters.");
+        return false;
+    }
+
+    // If all validations pass, return true
+    return true;
+}
+
+// Initialize with Sign In page active
+document.addEventListener("DOMContentLoaded", () => {
+    showSection("Sign_in");
+});
+
+    </script>
+</body>
+</html>
