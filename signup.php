@@ -11,10 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $stmt = $pdo->prepare("INSERT INTO users (name, username, email, phone, password) VALUES (?, ?, ?, ?, ?)");
         $stmt->execute([$name, $username, $email, $phone, $password]);
-        echo "<script>alert('Account created successfully!'); window.location.href = 'login.html';</script>";
+        echo "<script>alert('Account created successfully!'); window.location.href = 'index.html';</script>";
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) { // Duplicate entry
-            echo "<script>alert('Username or email already exists!'); window.location.href = 'login.html#';</script>";
+            echo "<script>alert('Username or email already exists!'); window.location.href = 'index.html#';</script>";
         } else {
             echo "Error: " . $e->getMessage();
         }
